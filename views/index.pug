@@ -1,0 +1,73 @@
+extends layout
+
+block content
+ button.btn.btn-primary.btn-block(type='button' data-toggle='modal' data-target='#formModal')
+  | Add Recipe
+ br
+ if recipes
+  each recipe, i in recipes 
+   .well
+    h4
+     | #{recipe.name} 
+     button.btn.btn-default.pull-right(data-toggle='collapse' href=`#recipe_${recipe.id}` aria-expanded='false' aria-controls=`recipe_${recipe.id}`)
+      span.glyphicon.glyphicon-triangle-bottom(aria-hidden='true')
+    .collapse(id=`recipe_${recipe.id}`)
+     br
+     br
+     p
+      strong Ingredients: 
+       | #{recipe.ingredients}
+     p
+      strong Directions: 
+       | #{recipe.directions}
+     br
+     hr
+     button.btn.btn-default.edit-recipe(data-toggle='modal' data-target='#editFormModal' data-id=recipe.id data-name=recipe.name data-ingredients=recipe.ingredients data-directions=recipe.directions)
+      span.glyphicon.glyphicon-edit(aria-hidden='true')
+     button.btn.btn-danger.delete-recipe(data-id=recipe.id)
+      span.glyphicon.glyphicon-remove(aria-hidden='true')
+      
+ #formModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='formModalLabel')
+  .modal-dialog(role='document')
+   .modal-content
+    form(method='post' action='/add')
+     .modal-header
+      button.close(type='button' data-dismiss='modal' aria-label='Close')
+       span(aria-hidden='true') &times;
+      h4#myModalLabel.modal-title Add Recipe
+     .modal-body
+      .form-group
+       label Recipe Name
+       input.form-control(type='text' name='name')
+      .form-group
+       label Ingredients
+       textarea.form-control(name='ingredients')
+      .form-group
+       label Directions
+       textarea.form-control(name='directions')
+     .modal-footer
+      button.btn.btn-default(type='button' data-dismiss='modal') Close
+      input.btn.btn-primary(type='submit' value='Save')
+
+ #editFormModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='editFormModalLabel')
+  .modal-dialog(role='document')
+   .modal-content
+    form(method='post' action='/edit')
+     input#edit-form-id(type='hidden' name='id')
+     .modal-header
+      button.close(type='button' data-dismiss='modal' aria-label='Close')
+       span(aria-hidden='true') &times;
+      h4#myModalLabel.modal-title Add Recipe
+     .modal-body
+      .form-group
+       label Recipe Name
+       input#edit-form-name.form-control(type='text' name='name')
+      .form-group
+       label Ingredients
+       textarea#edit-form-ingredients.form-control(name='ingredients')
+      .form-group
+       label Directions
+       textarea#edit-form-directions.form-control(name='directions')
+     .modal-footer
+      button.btn.btn-default(type='button' data-dismiss='modal') Close
+      input.btn.btn-primary(type='submit' value='Save')
